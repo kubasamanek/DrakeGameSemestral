@@ -1,4 +1,4 @@
-package suite01;
+package suite02;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -6,8 +6,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-        Offset2DTest.class,
-        TroopTest.class,
+        TroopTileTest.class,
+        BoardTest.class
 })
 
 public class TestSuite {
