@@ -1,9 +1,15 @@
 package thedrake;
 
+import java.io.PrintWriter;
 import java.util.List;
 
-public interface TilePos {
+public interface TilePos extends JSONSerializable {
     public static final TilePos OFF_BOARD = new TilePos() {
+
+        @Override
+        public void toJSON(PrintWriter writer) {
+            writer.write("\"" + toString() + "\"");
+        }
 
         @Override
         public int i() {

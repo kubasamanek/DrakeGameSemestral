@@ -1,10 +1,11 @@
 package thedrake;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Troop {
+public class Troop implements JSONSerializable{
     private final String name;
     private final Offset2D aversPivot;
     private final Offset2D reversPivot;
@@ -49,5 +50,10 @@ public class Troop {
     public List<TroopAction> actions(TroopFace face){
         if(face == TroopFace.AVERS) return aversActions;
         return reversActions;
+    }
+
+    @Override
+    public void toJSON(PrintWriter writer) {
+        writer.print("\"" + name() + "\"");
     }
 }

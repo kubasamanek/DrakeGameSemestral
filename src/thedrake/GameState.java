@@ -1,8 +1,9 @@
 package thedrake;
 
+import java.io.PrintWriter;
 import java.util.Optional;
 
-public class GameState {
+public class GameState implements JSONSerializable{
     private final Board board;
     private final PlayingSide sideOnTurn;
     private final Army blueArmy;
@@ -113,7 +114,7 @@ public class GameState {
         // Druha faze hry - pokladani strazi
         // Polozit muzeme jen vedle leadera
         else if(armyOnTurn().boardTroops().isPlacingGuards()){
-            return board.at(target).canStepOn() && armyOnTurn().boardTroops().leaderPosition().isNextTo(target);
+            return board.at(target).canStepOn() && armyOnTurn().boardTroops().leaderPosition().neighbours().contains(target);
         }
         // Posledni faze hry
         // Polozit muzeme na pole ktere sousedi s nejakou jeho jednotkou
@@ -198,5 +199,18 @@ public class GameState {
         }
 
         return new GameState(board, armyNotOnTurn, armyOnTurn, PlayingSide.ORANGE, result);
+    }
+
+    @Override
+    public void toJSON(PrintWriter writer) {
+        writer.write("{\"result\":");
+        result.toJSON(writer);
+        writer.print(",\"board\":");
+        board.toJSON(writer);
+        writer.print(",\"blueArmy\":");
+        blueArmy.toJSON(writer);
+        writer.print(",\"orangeArmy\":");
+        orangeArmy.toJSON(writer);
+        writer.print("}");
     }
 }

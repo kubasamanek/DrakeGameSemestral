@@ -1,8 +1,9 @@
 package thedrake;
 
+import java.io.PrintWriter;
 import java.util.*;
 
-public class BoardTroops {
+public class BoardTroops implements JSONSerializable{
     private final PlayingSide playingSide;
     private final Map<BoardPos, TroopTile> troopMap;
     private final TilePos leaderPosition;
@@ -49,8 +50,7 @@ public class BoardTroops {
     }
 
     public boolean isPlacingGuards() {
-        return leaderPosition != TilePos.OFF_BOARD
-                && guards != 2;
+        return isLeaderPlaced() && troopMap.size() <= 2;
     }
 
     public Set<BoardPos> troopPositions() {
@@ -60,18 +60,14 @@ public class BoardTroops {
     public BoardTroops placeTroop(Troop troop, BoardPos target)
             throws IllegalArgumentException {
         if (troopMap.containsKey(target)) throw new IllegalArgumentException();
-        
+
         TilePos newLeaderPos = leaderPosition;
         if(!isLeaderPlaced()) newLeaderPos = target;
-
-        int newGuards = isPlacingGuards()
-                        ? guards + 1
-                        : guards;
 
         Map<BoardPos, TroopTile> newTroopMap = new HashMap<>(troopMap);
         newTroopMap.put(target, new TroopTile(troop, playingSide, TroopFace.AVERS));
 
-        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, newGuards);
+        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, isPlacingGuards() ? guards + 1 : guards);
     }
 
     public BoardTroops troopStep(BoardPos origin, BoardPos target)
@@ -132,11 +128,36 @@ public class BoardTroops {
             int newGuards = guards;
 
             if(target.equals(leaderPosition)) newLeaderPos = TilePos.OFF_BOARD;
-            else newGuards -= 1;
 
             Map<BoardPos, TroopTile> newTroopMap = new HashMap<>(troopMap);
             newTroopMap.remove(target);
 
             return new BoardTroops(playingSide, newTroopMap, newLeaderPos, newGuards);
         }
+
+    @Override
+    public void toJSON(PrintWriter writer) {
+        writer.print("{\"side\":");
+        playingSide.toJSON(writer);
+        writer.print(",\"leaderPosition\":");
+        leaderPosition.toJSON(writer);
+        writer.print(",\"guards\":" + guards);
+        writer.print(",\"troopMap\":{");
+        TreeMap<BoardPos, TroopTile> sortedMap = new TreeMap<>(troopMap);
+
+        boolean isFirst = true;
+        for (Map.Entry<BoardPos, TroopTile> entry : sortedMap.entrySet()) {
+            if (!isFirst) {
+                writer.print(",");
+            } else {
+                isFirst = false;
+            }
+            entry.getKey().toJSON(writer);
+            writer.print(":");
+            entry.getValue().toJSON(writer);
+        }
+
+        writer.print("}}");
+
+    }
 }
