@@ -8,23 +8,27 @@ public class BoardTroops implements JSONSerializable{
     private final Map<BoardPos, TroopTile> troopMap;
     private final TilePos leaderPosition;
     private final int guards;
+    private final boolean guardsPlaced;
 
     public BoardTroops(PlayingSide playingSide) {
         this.playingSide = playingSide;
         this.troopMap = Collections.emptyMap();
         this.leaderPosition = TilePos.OFF_BOARD;
         this.guards = 0;
+        this.guardsPlaced = false;
     }
 
     public BoardTroops(
             PlayingSide playingSide,
             Map<BoardPos, TroopTile> troopMap,
             TilePos leaderPosition,
-            int guards) {
+            int guards,
+            boolean guardsPlaced) {
         this.playingSide=  playingSide;
         this.troopMap = troopMap;
         this.leaderPosition = leaderPosition;
         this.guards = guards;
+        this.guardsPlaced = false;
     }
 
     public Optional<TroopTile> at(TilePos pos) {
@@ -50,6 +54,7 @@ public class BoardTroops implements JSONSerializable{
     }
 
     public boolean isPlacingGuards() {
+        if(guardsPlaced) return false;
         return isLeaderPlaced() && troopMap.size() <= 2;
     }
 
@@ -67,7 +72,10 @@ public class BoardTroops implements JSONSerializable{
         Map<BoardPos, TroopTile> newTroopMap = new HashMap<>(troopMap);
         newTroopMap.put(target, new TroopTile(troop, playingSide, TroopFace.AVERS));
 
-        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, isPlacingGuards() ? guards + 1 : guards);
+        boolean guardsPlaced = false;
+        if (isLeaderPlaced() && newTroopMap.size() > 2) guardsPlaced = true;
+
+        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, isPlacingGuards() ? guards + 1 : guards, guardsPlaced);
     }
 
     public BoardTroops troopStep(BoardPos origin, BoardPos target)
@@ -87,7 +95,7 @@ public class BoardTroops implements JSONSerializable{
         newTroopMap.remove(origin);
         newTroopMap.put(target, tmp.flipped());
 
-        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, guards);
+        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, guards, guardsPlaced);
     }
 
     public BoardTroops troopFlip(BoardPos origin) {
@@ -108,7 +116,7 @@ public class BoardTroops implements JSONSerializable{
         TroopTile tile = newTroops.remove(origin);
         newTroops.put(origin, tile.flipped());
 
-        return new BoardTroops(playingSide(), newTroops, leaderPosition, guards);
+        return new BoardTroops(playingSide(), newTroops, leaderPosition, guards, guardsPlaced);
     }
 
     public boolean canMoveTiles(){
@@ -132,7 +140,7 @@ public class BoardTroops implements JSONSerializable{
             Map<BoardPos, TroopTile> newTroopMap = new HashMap<>(troopMap);
             newTroopMap.remove(target);
 
-            return new BoardTroops(playingSide, newTroopMap, newLeaderPos, newGuards);
+            return new BoardTroops(playingSide, newTroopMap, newLeaderPos, newGuards, guardsPlaced);
         }
 
     @Override

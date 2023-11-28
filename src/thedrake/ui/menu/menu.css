@@ -1,0 +1,46 @@
+.button {
+    -fx-background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white background */
+    -fx-text-fill: white;
+    -fx-font-size: 16px; /* Adjust the font size as needed */
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px; /* Adjust padding for size */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-border-color: white; /* White border */
+    -fx-border-width: 2; /* Border width */
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+
+    -fx-pref-width: 250px; /* Fixed width */
+    -fx-pref-height: 60px; /* Fixed height */
+    -fx-min-width: 100px;
+    -fx-min-height: 40px;
+    -fx-max-width: 350px;
+    -fx-max-height: 90px;
+}
+
+.button:hover{
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* Slightly more opaque on hover */
+}
+
+.button:pressed {
+
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* Slightly more opaque on hover */
+    -fx-translate-y: 2px; /* Slightly shift the button down */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0, 0, 0);
+}
+
+.background-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.5); /* White with 50% opacity */
+}
+
+.background-image {
+    -fx-background-image: url('menu_bg2.png');
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.logo-image-view {
+    -fx-max-width: 100px; /* Maximum width */
+    -fx-max-height: 50px; /* Maximum height */
+    -fx-preserve-ratio: true;
+}
