@@ -1,0 +1,46 @@
+.button {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+
+    -fx-pref-width: 250px;
+    -fx-pref-height: 60px;
+    -fx-min-width: 100px;
+    -fx-min-height: 40px;
+    -fx-max-width: 350px;
+    -fx-max-height: 90px;
+}
+
+.button:hover{
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+}
+
+.button:pressed {
+
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-translate-y: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0, 0, 0);
+}
+
+.background-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+}
+
+.background-image {
+    -fx-background-image: url('menu_bg2.png');
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.logo-image-view {
+    -fx-max-width: 100px;
+    -fx-max-height: 50px;
+    -fx-preserve-ratio: true;
+}
