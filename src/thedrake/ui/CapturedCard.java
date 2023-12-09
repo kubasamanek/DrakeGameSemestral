@@ -12,10 +12,7 @@ public class CapturedCard extends Pane {
     private final PlayingSide side;
     private final TileBackgrounds backgrounds = new TileBackgrounds();
 
-    private final int size;
-
     public CapturedCard(Troop troop, PlayingSide side){
-        size = 50;
         this.troop = troop;
         this.side = side;
         setPrefSize(50, 50);

@@ -21,28 +21,36 @@ public class CapturedView extends VBox {
 
     public CapturedView(List<Troop> captured, PlayingSide side){
         this.color = side;
-        capturedTroops = captured;
-        this.setSpacing(1);
-        this.label = new Label(side == PlayingSide.BLUE ? "Blue captured:" : "Orange Captured:");
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        label.setTextFill(side == PlayingSide.BLUE ? Color.DEEPSKYBLUE : Color.ORANGE);
-        label.setPadding(new Insets(5, 10, 5, 10));
+        this.capturedTroops = captured;
 
+        this.setSpacing(1);
+        this.setPadding(new Insets(10));
+
+        this.setLabel();
+
+        updateCapturedView();
+
+    }
+
+    private void setLabel(){
+        this.label = new Label(this.color == PlayingSide.BLUE ? "Blue captured:" : "Orange Captured:");
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        label.setTextFill(this.color == PlayingSide.BLUE ? Color.DEEPSKYBLUE : Color.ORANGE);
+        label.setPadding(new Insets(5, 10, 5, 10));
         label.setBorder(new Border(new BorderStroke(
                 Color.BLACK,
                 BorderStrokeStyle.SOLID,
                 new CornerRadii(5),
                 DEFAULT)));
 
-        updateCapturedView();
-
-        this.setPadding(new Insets(10));
     }
 
     private void updateCapturedView(){
         PlayingSide oppositeSide = color == PlayingSide.BLUE ? PlayingSide.ORANGE : PlayingSide.BLUE;
+
         this.getChildren().clear();
         this.getChildren().add(this.label);
+
         for (Troop troop : capturedTroops) {
             CapturedCard card = new CapturedCard(troop, oppositeSide);
             HBox hbox = new HBox(card);

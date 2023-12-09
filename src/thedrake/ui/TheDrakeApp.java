@@ -1,6 +1,5 @@
 package thedrake.ui;
 
-import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,13 +11,9 @@ import thedrake.GameState;
 import thedrake.PositionFactory;
 import thedrake.StandardDrakeSetup;
 
-import javafx.scene.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.transform.Rotate;
-import javafx.animation.RotateTransition;
-import javafx.util.Duration;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class TheDrakeApp extends Application implements GameEndCallback {
 
@@ -28,7 +23,6 @@ public class TheDrakeApp extends Application implements GameEndCallback {
     public static void main(String[] args) {
         launch(args);
     }
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -45,7 +39,7 @@ public class TheDrakeApp extends Application implements GameEndCallback {
     }
 
     public static void startGame(Stage primaryStage, TheDrakeApp appInstance) {
-        GameState gameState = createSampleGameState();
+        GameState gameState = createStartingGameStateWithRandomMountains();
         GameView gameView = new GameView(gameState, appInstance);
         Scene scene = new Scene(gameView);
         primaryStage.setScene(scene);
@@ -53,22 +47,35 @@ public class TheDrakeApp extends Application implements GameEndCallback {
         primaryStage.show();
     }
 
-    // Public static method to get the instance
     public static TheDrakeApp getInstance() {
         return instance;
     }
 
-    private static GameState createSampleGameState() {
+    private static GameState createStartingGameState() {
+        Board board = new Board(4);
+        return new StandardDrakeSetup().startState(board);
+    }
+
+    public static GameState createStartingGameStateWithRandomMountains() {
         Board board = new Board(4);
         PositionFactory positionFactory = board.positionFactory();
-        board = board.withTiles(new Board.TileAt(positionFactory.pos(1, 1), BoardTile.MOUNTAIN));
+
+        Random random = new Random();
+        int numberOfMountains = 2 + random.nextInt(3);
+
+        Set<Board.TileAt> mountainTiles = new HashSet<>();
+        while (mountainTiles.size() < numberOfMountains) {
+            int x = random.nextInt(4);
+            int y = random.nextInt(4);
+
+            mountainTiles.add(new Board.TileAt(positionFactory.pos(x, y), BoardTile.MOUNTAIN));
+        }
+
+        for (Board.TileAt tile : mountainTiles) {
+            board = board.withTiles(tile);
+        }
+
         return new StandardDrakeSetup().startState(board);
-            //.placeFromStack(positionFactory.pos(0, 0))
-            //.placeFromStack(positionFactory.pos(3, 3))
-            //.placeFromStack(positionFactory.pos(0, 1))
-            //.placeFromStack(positionFactory.pos(3, 2))
-            //.placeFromStack(positionFactory.pos(1, 0))
-            //.placeFromStack(positionFactory.pos(2, 3));
     }
 
     @Override

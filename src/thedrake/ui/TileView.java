@@ -14,16 +14,16 @@ import thedrake.Tile;
 
 public class TileView extends Pane {
 
-    private BoardPos boardPos;
+    private final BoardPos boardPos;
 
     private Tile tile;
 
-    private TileBackgrounds backgrounds = new TileBackgrounds();
+    private final TileBackgrounds backgrounds = new TileBackgrounds();
 
-    private Border selectBorder = new Border(
+    private final Border selectBorder = new Border(
         new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3)));
 
-    private TileViewContext tileViewContext;
+    private final TileViewContext tileViewContext;
 
     private Move move;
 

@@ -17,9 +17,6 @@
     <VBox fx:id="menuVBox" spacing="20" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
         <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
-        <!-- <StackPane fx:id="cubeContainer" prefWidth="100" prefHeight="100" /> -->
-
-
         <ImageView fx:id="logoImageView" fitWidth="400" fitHeight="400" preserveRatio="true" styleClass="logo-image-view">
             <Image url="@logo.png" />
         </ImageView>

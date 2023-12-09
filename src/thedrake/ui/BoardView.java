@@ -19,7 +19,7 @@ public class BoardView extends GridPane implements TileViewContext {
 
     private TileView selected;
 
-    private GameView gameView;
+    private final GameView gameView;
 
     public BoardView(GameState gameState, GameView gameView) {
         this.gameState = gameState;
@@ -35,7 +35,6 @@ public class BoardView extends GridPane implements TileViewContext {
         }
 
         setBorderToPlayingSide();
-
         setHgap(5);
         setVgap(5);
         setPadding(new Insets(15));
@@ -46,10 +45,9 @@ public class BoardView extends GridPane implements TileViewContext {
     public void tileViewSelected(TileView tileView) {
         if (selected != null && selected != tileView)
             selected.unselect();
-
-
         selected = tileView;
 
+        // Do NOT select if no moves available
         if(validMoves.boardMoves(tileView.position()).isEmpty())
             selected.unselect();
 
@@ -60,19 +58,16 @@ public class BoardView extends GridPane implements TileViewContext {
 
     @Override
     public void executeMove(Move move) {
+        // No board tile selected means placing from the stack.
         if(selected == null){
             gameState = gameState.placeFromStack(move.target());
-            clearMoves();
-            validMoves = new ValidMoves(gameState);
-            updateTiles();
-            gameView.updateGame();
-            return;
+        } else {
+            selected.unselect();
+            selected = null;
+            gameState = move.execute(gameState);
         }
 
-        selected.unselect();
-        selected = null;
         clearMoves();
-        gameState = move.execute(gameState);
         validMoves = new ValidMoves(gameState);
         updateTiles();
         gameView.updateGame();
@@ -93,6 +88,7 @@ public class BoardView extends GridPane implements TileViewContext {
         }
     }
 
+    // Set border of the board to the color of the side on turn
     private void setBorderToPlayingSide(){
         this.setBorder(new Border(new BorderStroke(
                 gameState.sideOnTurn() == PlayingSide.BLUE ? Color.DEEPSKYBLUE : Color.ORANGE,
@@ -122,7 +118,6 @@ public class BoardView extends GridPane implements TileViewContext {
         int index = (3 - target.j()) * 4 + target.i();
         return (TileView) getChildren().get(index);
     }
-
 
     public GameState getGameState() {
         return gameState;

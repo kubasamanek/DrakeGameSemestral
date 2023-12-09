@@ -9,18 +9,18 @@ import thedrake.*;
 import java.io.Console;
 import java.util.List;
 
-public class HandView extends HBox implements BoardUpdateListener{
-    private Army playerArmy;
+public class HandView extends HBox{
+    private final Army playerArmy;
 
-    private PlayingSide side;
+    private final PlayingSide side;
 
-    private List<Move> validMoves;
+    private final List<Move> validMoves;
 
-    private boolean isOnTurn;
+    private final boolean isOnTurn;
 
     private CardView selectedCard;
 
-    private BoardView boardView;
+    private final BoardView boardView;
 
 
     public HandView(GameState gameState, PlayingSide side, ValidMoves validMoves, BoardView boardView) {
@@ -35,7 +35,6 @@ public class HandView extends HBox implements BoardUpdateListener{
 
         isOnTurn = side == gameState.sideOnTurn();
 
-
         this.setSpacing(10);
 
         updateHandView();
@@ -43,10 +42,10 @@ public class HandView extends HBox implements BoardUpdateListener{
 
     public void setSelectedCard(CardView card) {
         if (selectedCard != null) {
-            selectedCard.unselect(); // Unselect the previously selected card
+            selectedCard.unselect();
         }
         boardView.unselectAll();
-        selectedCard = card; // Update the reference to the new selected card
+        selectedCard = card;
         updateBoardView();
     }
 
@@ -66,8 +65,4 @@ public class HandView extends HBox implements BoardUpdateListener{
         }
     }
 
-    @Override
-    public void onBoardUpdated() {
-        updateHandView();
-    }
 }

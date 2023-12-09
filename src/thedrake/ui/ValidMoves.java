@@ -39,7 +39,8 @@ public class ValidMoves {
                 j = state.board().dimension() - 1;
 
             for (int i = 0; i < state.board().dimension(); i++) {
-                moves.add(new PlaceFromStack(pf.pos(i, j)));
+                if(state.canPlaceFromStack(pf.pos(i, j)))
+                    moves.add(new PlaceFromStack(pf.pos(i, j)));
             }
         } else if (armyOnTurn.boardTroops().isPlacingGuards()) {
             TilePos leader = armyOnTurn.boardTroops().leaderPosition();

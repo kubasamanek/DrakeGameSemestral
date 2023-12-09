@@ -30,6 +30,7 @@ public class TileBackgrounds {
         return EMPTY_BG;
     }
 
+    // Overloaded method to add the ability to set the image size
     public Background getTroop(Troop info, PlayingSide side, TroopFace face, int size) {
         TroopImageSet images = new TroopImageSet(info.name());
         Image img = images.get(side, face);

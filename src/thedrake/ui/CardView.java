@@ -6,14 +6,11 @@ import javafx.scene.paint.Color;
 import thedrake.*;
 
 public class CardView extends Pane {
-    private Troop troop;
-    private PlayingSide side;
-
-    private boolean canBePlayed;
-
-    private HandView hand;
-
-    private TileBackgrounds backgrounds = new TileBackgrounds();
+    private final Troop troop;
+    private final PlayingSide side;
+    private final boolean canBePlayed;
+    private final HandView hand;
+    private final TileBackgrounds backgrounds = new TileBackgrounds();
 
     public CardView(Troop troop, PlayingSide side, boolean canBePlayed, HandView hand) {
         this.troop = troop;
@@ -43,5 +40,4 @@ public class CardView extends Pane {
     public void unselect() {
         setBorder(null);
     }
-
 }
