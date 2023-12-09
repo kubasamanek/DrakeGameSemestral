@@ -28,7 +28,7 @@ public class BoardTroops implements JSONSerializable{
         this.troopMap = troopMap;
         this.leaderPosition = leaderPosition;
         this.guards = guards;
-        this.guardsPlaced = false;
+        this.guardsPlaced = guardsPlaced;
     }
 
     public Optional<TroopTile> at(TilePos pos) {
@@ -54,8 +54,7 @@ public class BoardTroops implements JSONSerializable{
     }
 
     public boolean isPlacingGuards() {
-        if(guardsPlaced) return false;
-        return isLeaderPlaced() && troopMap.size() <= 2;
+        return isLeaderPlaced() && !guardsPlaced;
     }
 
     public Set<BoardPos> troopPositions() {
@@ -72,10 +71,13 @@ public class BoardTroops implements JSONSerializable{
         Map<BoardPos, TroopTile> newTroopMap = new HashMap<>(troopMap);
         newTroopMap.put(target, new TroopTile(troop, playingSide, TroopFace.AVERS));
 
-        boolean guardsPlaced = false;
-        if (isLeaderPlaced() && newTroopMap.size() > 2) guardsPlaced = true;
+        boolean areGuardsPlaced = this.guardsPlaced;
+        if (isLeaderPlaced() && !areGuardsPlaced && (guards + 1) == 2) {
+            areGuardsPlaced = true;
+        }
+        int newGuards = isPlacingGuards() ? guards + 1 : guards;
 
-        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, isPlacingGuards() ? guards + 1 : guards, guardsPlaced);
+        return new BoardTroops(playingSide, newTroopMap, newLeaderPos, newGuards, areGuardsPlaced);
     }
 
     public BoardTroops troopStep(BoardPos origin, BoardPos target)

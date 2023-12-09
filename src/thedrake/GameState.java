@@ -100,7 +100,8 @@ public class GameState implements JSONSerializable{
         if(result != GameResult.IN_PLAY
                 || target == TilePos.OFF_BOARD
                 || armyOnTurn().stack().isEmpty()
-                || !tileAt(target).canStepOn())
+                || !tileAt(target).canStepOn()
+                || tileAt(target).hasTroop())
             return false;
 
         // Prvni faze - pokladani vudce
@@ -200,6 +201,16 @@ public class GameState implements JSONSerializable{
 
         return new GameState(board, armyNotOnTurn, armyOnTurn, PlayingSide.ORANGE, result);
     }
+
+    public Army getBlueArmy() {
+        return blueArmy;
+    }
+
+    public Army getOrangeArmy() {
+        return orangeArmy;
+    }
+
+    public GameResult getResult() { return result; }
 
     @Override
     public void toJSON(PrintWriter writer) {

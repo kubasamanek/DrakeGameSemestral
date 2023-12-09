@@ -1,9 +1,7 @@
 package thedrake.ui;
 
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import thedrake.*;
 
@@ -32,6 +30,23 @@ public class TileBackgrounds {
         return EMPTY_BG;
     }
 
+    public Background getTroop(Troop info, PlayingSide side, TroopFace face, int size) {
+        TroopImageSet images = new TroopImageSet(info.name());
+        Image img = images.get(side, face);
+
+        BackgroundSize bgSize = new BackgroundSize(size, size, false, false, false, false);
+
+        // Create a BackgroundImage with the new size
+        BackgroundImage bgImage = new BackgroundImage(
+                img,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                bgSize);
+
+        return new Background(bgImage);
+    }
+
     public Background getTroop(Troop info, PlayingSide side, TroopFace face) {
         TroopImageSet images = new TroopImageSet(info.name());
         BackgroundImage bgImage = new BackgroundImage(
@@ -39,4 +54,7 @@ public class TileBackgrounds {
 
         return new Background(bgImage);
     }
+
+
+
 }
